@@ -34,7 +34,6 @@ public class ChromeTest {
 
 
     @Test
-
     public void testNumProducts(){
         WebDriverWait ewait = new WebDriverWait(driver, Duration.ofSeconds(10L));
         driver.get("https://www.lidl.es/");
@@ -50,7 +49,20 @@ public class ChromeTest {
         assertEquals(4,products.size(),"Se esperaban 4 productos.");
     }
 
+/*b. Haz otro test que use la barra de búsqueda del e-commerce, y compruebe el
+título del resultado (el contenido del elemento html <title> de la página web
+tras buscar).*/
 
+    @Test
+    public void testTitle(){
+        WebDriverWait ewait = new WebDriverWait(driver, Duration.ofSeconds(10L));
+        driver.get("https://www.lidl.es/");
+        ewait.until(ExpectedConditions.titleContains("Lidl"));
+        driver.findElement(By.xpath("//button[@class='cookie-alert-extended-button']")).click();
+        driver.findElement(By.cssSelector("input#mainsearch-input")).sendKeys("zumo");
+        driver.findElement(By.cssSelector("button.primary")).click();
+        String titleExp = "Resultado de búsqueda | Lidl";
+        assertEquals(titleExp, driver.getTitle(),"El resultado esterado es "+titleExp);
+    }
 
-    //driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS); "plp-product-grid-box-tile__title"
 }
