@@ -65,4 +65,28 @@ tras buscar).*/
         assertEquals(titleExp, driver.getTitle(),"El resultado esterado es "+titleExp);
     }
 
+/*c. Haz un test que sea capaz de añadir un artículo al carrito. Razona qué
+testearías aquí y cómo.
+    i. Nota: Es posible que necesitéis Waits o no, dependiendo de la web que estéis testeando.*/
+
+    @Test
+    public void testAddCart() throws InterruptedException {
+        WebDriverWait ewait = new WebDriverWait(driver, Duration.ofSeconds(10L));
+        driver.get("https://www.lidl.es/");
+        ewait.until(ExpectedConditions.titleContains("Lidl"));
+        driver.findElement(By.xpath("//button[@class='cookie-alert-extended-button']")).click();
+        driver.findElement(By.cssSelector("input#mainsearch-input")).sendKeys("juguetes");
+        driver.findElement(By.cssSelector("button.primary")).click();
+        ewait.until(ExpectedConditions.titleContains("Resultado de búsqueda | Lidl"));
+        driver.findElement(By.cssSelector("a#product_413340")).click();
+        ewait.until(ExpectedConditions.titleContains("Bandito Hockey de mesa | Lidl"));
+        String productInit = driver.findElement(By.xpath("//div//h1[contains( . ,'Bandito Hockey de mesa')]")).getText();
+        driver.findElement(By.cssSelector("button#add-to-cart")).click();
+        Thread.sleep(4000);
+        driver.findElement(By.xpath("//footer//a[contains( . ,'Ver cesta')]")).click();
+        ewait.until(ExpectedConditions.titleContains("Cesta | Lidl"));
+        Thread.sleep(4000);
+        String productInCart = driver.findElement(By.xpath("//h4//a[contains( . ,'Bandito Hockey de mesa')]")).getText();
+        assertEquals(productInit, productInCart,"El resultado esterado es "+productInit);
+    }
 }
