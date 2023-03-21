@@ -54,12 +54,13 @@ título del resultado (el contenido del elemento html <title> de la página web
 tras buscar).*/
 
     @Test
-    public void testTitle(){
+    public void testTitle() throws InterruptedException {
         WebDriverWait ewait = new WebDriverWait(driver, Duration.ofSeconds(10L));
         driver.get("https://www.lidl.es/");
         ewait.until(ExpectedConditions.titleContains("Lidl"));
         driver.findElement(By.xpath("//button[@class='cookie-alert-extended-button']")).click();
         driver.findElement(By.cssSelector("input#mainsearch-input")).sendKeys("zumo");
+        Thread.sleep(3000);
         driver.findElement(By.cssSelector("button.primary")).click();
         String titleExp = "Resultado de búsqueda | Lidl";
         assertEquals(titleExp, driver.getTitle(),"El resultado esterado es "+titleExp);
